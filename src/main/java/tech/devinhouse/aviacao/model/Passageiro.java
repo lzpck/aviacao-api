@@ -1,11 +1,9 @@
 package tech.devinhouse.aviacao.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Passageiro {
@@ -21,6 +19,9 @@ public class Passageiro {
     private Classificacao classificacao;
 
     private Integer milhas;
+
+    @OneToMany(mappedBy = "passageiro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Confirmacao> confirmacoes;
 
     public Long getCpf() {
         return cpf;

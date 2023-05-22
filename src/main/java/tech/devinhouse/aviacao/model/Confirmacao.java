@@ -1,7 +1,6 @@
 package tech.devinhouse.aviacao.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +12,10 @@ public class Confirmacao {
     private String assento;
     private Boolean malasDespachadas;
     private LocalDateTime dataHoraConfirmacao;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cpf_passageiro")
+    private Passageiro passageiro;
 
     public String geteTicket() {
         return eTicket;
