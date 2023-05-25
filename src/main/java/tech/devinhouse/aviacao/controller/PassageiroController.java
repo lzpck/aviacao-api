@@ -29,13 +29,8 @@ public class PassageiroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PassageiroResponse>> getTodosPassageiros() {
-        List<Passageiro> passageiros = passageiroService.getTodosPassageiros();
-        List<PassageiroResponse> passageirosResponse = new ArrayList<>();
-        for (Passageiro passageiro : passageiros) {
-            passageiroResponse = mapper.map(passageiro, PassageiroResponse.class);
-            passageirosResponse.add(passageiroResponse);
-        }
-        return ResponseEntity.ok(passageirosResponse);
+    public ResponseEntity<List<PassageiroResponse>> getAllPassageiros() {
+        List<PassageiroResponse> passageiros = passageiroService.getAllPassageiros();
+        return ResponseEntity.ok(passageiros);
     }
 }
