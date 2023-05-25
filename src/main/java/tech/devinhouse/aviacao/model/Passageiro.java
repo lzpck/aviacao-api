@@ -1,13 +1,15 @@
 package tech.devinhouse.aviacao.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Passageiro {
 
     @Id
@@ -22,43 +24,38 @@ public class Passageiro {
 
     private Integer milhas;
 
-    public Long getCpf() {
-        return cpf;
-    }
+    @OneToMany(mappedBy = "passageiro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Confirmacao> confirmacoes;
 
-    public void setCpf(Long cpf) {
+    public Passageiro(Long cpf, String nome, LocalDate dataDeNascimento, Classificacao classificacao, Integer milhas, List<Confirmacao> confirmacoes) {
         this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public LocalDate getDataDeNascimento() {
-        return dataDeNascimento;
-    }
-
-    public void setDataDeNascimento(LocalDate dataDeNascimento) {
         this.dataDeNascimento = dataDeNascimento;
-    }
-
-    public Classificacao getClassificacao() {
-        return classificacao;
-    }
-
-    public void setClassificacao(Classificacao classificacao) {
         this.classificacao = classificacao;
-    }
-
-    public Integer getMilhas() {
-        return milhas;
-    }
-
-    public void setMilhas(Integer milhas) {
         this.milhas = milhas;
+        this.confirmacoes = confirmacoes;
+    }
+
+    public Passageiro(Long cpf, String nome, LocalDate dataDeNascimento, Integer milhas, List<Confirmacao> confirmacoes) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.dataDeNascimento = dataDeNascimento;
+        this.milhas = milhas;
+        this.confirmacoes = confirmacoes;
+        atualizarClassificacao();
+    }
+
+    private void atualizarClassificacao() {
+        if (milhas >= 10000) {
+            this.classificacao = Classificacao.VIP;
+        } else if (milhas >= 7500) {
+            this.classificacao = Classificacao.OURO;
+        } else if (milhas >= 5000) {
+            this.classificacao = Classificacao.PRATA;
+        } else if (milhas >= 2500) {
+            this.classificacao = Classificacao.BRONZE;
+        } else {
+            this.classificacao = Classificacao.ASSOCIADO;
+        }
     }
 }
