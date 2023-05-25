@@ -39,7 +39,7 @@ public class PassageiroService {
                 .collect(Collectors.toList());
     }
 
-    private PassageiroResponse toPassageiroResponse(Passageiro passageiro) {
+    public PassageiroResponse toPassageiroResponse(Passageiro passageiro) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
@@ -58,6 +58,10 @@ public class PassageiroService {
         }
 
         return response;
+    }
+
+    public Optional<Passageiro> consultarPorCpf(Long cpf) {
+        return passageiroRepository.findById(cpf);
     }
 }
 
