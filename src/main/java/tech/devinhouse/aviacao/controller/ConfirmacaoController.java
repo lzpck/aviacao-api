@@ -24,12 +24,8 @@ public class ConfirmacaoController {
 
     @PostMapping("/confirmacao")
     public ResponseEntity<ConfirmacaoResponse> registrarConfirmacao(@RequestBody ConfirmacaoRequest request) {
-        try {
-            Confirmacao confirmacao = confirmacaoService.registrarConfirmacao(request.getCpf(), request.getAssento(), request.isMalasDespachadas());
-            ConfirmacaoResponse response = new ConfirmacaoResponse(confirmacao.geteTicket(), confirmacao.getDataHoraConfirmacao());
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Confirmacao confirmacao = confirmacaoService.registrarConfirmacao(request.getCpf(), request.getAssento(), request.isMalasDespachadas());
+        ConfirmacaoResponse response = new ConfirmacaoResponse(confirmacao.geteTicket(), confirmacao.getDataHoraConfirmacao());
+        return ResponseEntity.ok(response);
     }
 }

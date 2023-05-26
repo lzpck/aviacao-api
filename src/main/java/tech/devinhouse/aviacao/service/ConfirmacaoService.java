@@ -1,9 +1,9 @@
 package tech.devinhouse.aviacao.service;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tech.devinhouse.aviacao.exception.EntidadeJaExisteException;
+import tech.devinhouse.aviacao.exception.AssentoEmergenciaNaoPermitidoException;
+import tech.devinhouse.aviacao.exception.AssentoJaReservadoException;
 import tech.devinhouse.aviacao.exception.EntidadeNaoEncontradaException;
 import tech.devinhouse.aviacao.model.Confirmacao;
 import tech.devinhouse.aviacao.model.Passageiro;
@@ -34,18 +34,18 @@ public class ConfirmacaoService {
 
     public Confirmacao registrarConfirmacao(Long cpf, String assento, boolean malasDespachadas) {
         Passageiro passageiro = passageiroRepository.findById(cpf)
-                .orElseThrow(() -> new RuntimeException("Passageiro não encontrado(a)!"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Passageiro com CPF " + cpf));
 
         if (!assentoService.isAssentoExistente(assento)) {
-            throw new RuntimeException("Assento não existente!");
+            throw new EntidadeNaoEncontradaException("Assento " + assento);
         }
 
         if (confirmacaoRepository.findByAssento(assento).isPresent()) {
-            throw new RuntimeException("Assento já reservado!");
+            throw new AssentoJaReservadoException(assento);
         }
 
         if (assentoService.isFileiraEmergencia(assento) && (passageiro.isMenorDeIdade() || !malasDespachadas)) {
-            throw new RuntimeException("Não é possível reservar fileiras de emergência para menores de idade ou sem despachar malas");
+            throw new AssentoEmergenciaNaoPermitidoException();
         }
 
         Confirmacao confirmacao = new Confirmacao(assento, malasDespachadas, passageiro);
