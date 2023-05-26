@@ -13,9 +13,15 @@ import java.util.UUID;
 public class Confirmacao {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String eTicket;
+
     private String assento;
+
     private Boolean malasDespachadas;
+
     private LocalDateTime dataHoraConfirmacao;
 
     @ManyToOne(fetch = FetchType.LAZY)

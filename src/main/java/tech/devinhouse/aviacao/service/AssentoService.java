@@ -18,4 +18,11 @@ public class AssentoService {
         return assentos;
     }
 
+    public boolean isAssentoExistente(String assento) {
+        return assento.matches("[1-9][A-F]");
+    }
+
+    public boolean isFileiraEmergencia(String assento) {
+        return assento.startsWith("4") || assento.startsWith("5");
+    }
 }

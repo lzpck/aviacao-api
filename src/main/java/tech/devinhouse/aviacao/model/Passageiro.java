@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Entity
@@ -58,4 +59,29 @@ public class Passageiro {
             this.classificacao = Classificacao.ASSOCIADO;
         }
     }
+
+    public boolean isMenorDeIdade() {
+        return Period.between(dataDeNascimento, LocalDate.now()).getYears() < 18;
+    }
+
+    public void adicionarMilhas(Confirmacao confirmacao) {
+        switch (classificacao) {
+            case VIP:
+                milhas += 100;
+                break;
+            case OURO:
+                milhas += 80;
+                break;
+            case PRATA:
+                milhas += 50;
+                break;
+            case BRONZE:
+                milhas += 30;
+                break;
+            case ASSOCIADO:
+                milhas += 10;
+                break;
+        }
+        confirmacoes.add(confirmacao);
+        }
 }
