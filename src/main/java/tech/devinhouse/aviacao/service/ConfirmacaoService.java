@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import tech.devinhouse.aviacao.exception.AssentoEmergenciaNaoPermitidoException;
 import tech.devinhouse.aviacao.exception.AssentoJaReservadoException;
 import tech.devinhouse.aviacao.exception.EntidadeNaoEncontradaException;
+import tech.devinhouse.aviacao.model.Classificacao;
 import tech.devinhouse.aviacao.model.Confirmacao;
 import tech.devinhouse.aviacao.model.Passageiro;
 import tech.devinhouse.aviacao.repository.ConfirmacaoRepository;
@@ -36,6 +37,8 @@ public class ConfirmacaoService {
         Passageiro passageiro = passageiroRepository.findById(cpf)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Passageiro com CPF " + cpf));
 
+        Classificacao classificacao = passageiro.getClassificacao();
+
         if (!assentoService.isAssentoExistente(assento)) {
             throw new EntidadeNaoEncontradaException("Assento " + assento);
         }
@@ -48,7 +51,7 @@ public class ConfirmacaoService {
             throw new AssentoEmergenciaNaoPermitidoException();
         }
 
-        Confirmacao confirmacao = new Confirmacao(assento, malasDespachadas, passageiro);
+        Confirmacao confirmacao = new Confirmacao(assento, malasDespachadas, passageiro, classificacao);
         passageiro.adicionarMilhas(confirmacao);
         confirmacaoRepository.save(confirmacao);
 

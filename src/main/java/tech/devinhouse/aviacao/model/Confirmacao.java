@@ -28,12 +28,21 @@ public class Confirmacao {
     @JoinColumn(name = "cpf_passageiro")
     private Passageiro passageiro;
 
+    private Classificacao classificacao;
+
     public Confirmacao(String assento, Boolean malasDespachadas, Passageiro passageiro) {
         this.eTicket = UUID.randomUUID().toString();
         this.assento = assento;
         this.malasDespachadas = malasDespachadas;
         this.dataHoraConfirmacao = LocalDateTime.now();
         this.passageiro = passageiro;
+    }
+
+    public Confirmacao(String assento, Boolean malasDespachadas, Passageiro passageiro, Classificacao classificacao) {
+        this.assento = assento;
+        this.malasDespachadas = malasDespachadas;
+        this.passageiro = passageiro;
+        this.classificacao = classificacao;
     }
 
     public String geteTicket() {
@@ -74,5 +83,17 @@ public class Confirmacao {
 
     public void setPassageiro(Passageiro passageiro) {
         this.passageiro = passageiro;
+    }
+
+    public Classificacao getClassificacao() {
+        return classificacao;
+    }
+
+    public void setClassificacao(Classificacao classificacao) {
+        this.classificacao = classificacao;
+    }
+
+    public boolean isMalasDespachadas() {
+        return this.malasDespachadas;
     }
 }

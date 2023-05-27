@@ -24,7 +24,10 @@ public class ConfirmacaoController {
 
     @PostMapping("/confirmacao")
     public ResponseEntity<ConfirmacaoResponse> registrarConfirmacao(@RequestBody ConfirmacaoRequest request) {
-        Confirmacao confirmacao = confirmacaoService.registrarConfirmacao(request.getCpf(), request.getAssento(), request.isMalasDespachadas());
+        Confirmacao confirmacao = confirmacaoService.registrarConfirmacao(
+                request.getCpf(),
+                request.getAssento(),
+                request.isMalasDespachadas());
         ConfirmacaoResponse response = new ConfirmacaoResponse(confirmacao.geteTicket(), confirmacao.getDataHoraConfirmacao());
         return ResponseEntity.ok(response);
     }
